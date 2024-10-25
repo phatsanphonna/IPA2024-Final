@@ -13,7 +13,7 @@ import restconf_final as restconf
 import netmiko_final as netmiko
 import ansible_final as ansible
 import json
-from requests import MultipartEncoder
+from requests_toolbelt import MultipartEncoder
 
 #######################################################################################
 # 2. Assign the Webex access token to the variable ACCESS_TOKEN using environment variables.
