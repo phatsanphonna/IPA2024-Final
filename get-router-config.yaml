@@ -2,7 +2,9 @@
 - name: SAVE RUNNING-CONFIG TO FILE
   hosts: CSR1KV-Pod1-3
   gather_facts: false
-  connection: local
+  connection: ansible.netcommon.network_cli
+  vars: # for execution environment
+    ansible_network_os: cisco.ios.ios
 
   tasks:
     - name: DISPLAYING THE RUNNING-CONFIG

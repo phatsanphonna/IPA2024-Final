@@ -111,17 +111,17 @@ while True:
 
         if command == "showrun" and responseMessage == 'ok':
             filename = "show_run_65070171_CSR1KV-Pod1-3.txt"
-            fileobject = open(filename)
+            fileobject = open(filename, "rb")
             filetype = "text/plain"
             postData = {
                 "roomId": roomIdToGetMessages,
                 "text": "show running config",
                 "files": (filename, fileobject, filetype),
             }
-            postData = MultipartEncoder(postData)
+            postData = MultipartEncoder(fields=postData)
             HTTPHeaders = {
             "Authorization": ACCESS_TOKEN,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": postData.content_type,
             }
             
             
