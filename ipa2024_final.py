@@ -10,6 +10,8 @@ import requests
 import time
 import os
 import restconf_final as restconf
+import netmiko_final as netmiko
+import ansible_final as ansible
 import json
 
 #######################################################################################
@@ -85,10 +87,10 @@ while True:
             responseMessage = restconf.disable()
         elif command == "status":
             responseMessage = restconf.status()
-        # elif command == "gigabit_status":
-        #     responseMessage = restconf.gigabit_status()
-        # elif command == "showrun":
-        #     responseMessage = "ok"
+        elif command == "gigabit_status":
+            responseMessage = netmiko.gigabit_status()
+        elif command == "showrun":
+            responseMessage = ansible.showrun()
         else:
             responseMessage = "Error: No command or unknown command"
         
