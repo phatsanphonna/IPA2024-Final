@@ -11,8 +11,9 @@ import time
 import os
 import restconf_final as restconf
 import netmiko_final as netmiko
-# import ansible_final as ansible
+import ansible_final as ansible
 import json
+from requests import MultipartEncoder
 
 #######################################################################################
 # 2. Assign the Webex access token to the variable ACCESS_TOKEN using environment variables.
@@ -90,8 +91,7 @@ while True:
         elif command == "gigabit_status":
             responseMessage = netmiko.gigabit_status()
         elif command == "showrun":
-            # responseMessage = ansible.showrun()
-            responseMessage = "ok"
+            responseMessage = ansible.showrun()
         else:
             responseMessage = "Error: No command or unknown command"
         
@@ -110,19 +110,21 @@ while True:
         # https://developer.webex.com/docs/basics for more detail
 
         if command == "showrun" and responseMessage == 'ok':
-            filename = "<!!!REPLACEME with show run filename and path!!!>"
-            fileobject = None
-            filetype = "<!!!REPLACEME with Content-type of the file!!!>"
-            # postData = {
-            #     "roomId": roomIdToGetMessages,
-            #     "text": "show running config",
-            #     "files": (<!!!REPLACEME!!!>, <!!!REPLACEME!!!>, <!!!REPLACEME!!!>),
-            # }
-            # postData = MultipartEncoder(<!!!REPLACEME!!!>)
-            # HTTPHeaders = {
-            # "Authorization": ACCESS_TOKEN,
-            # "Content-Type": <!!!REPLACEME with postData Content-Type!!!>,
-            # }
+            filename = "show_run_65070171_CSR1KV-Pod1-3.txt"
+            fileobject = open(filename)
+            filetype = "text/plain"
+            postData = {
+                "roomId": roomIdToGetMessages,
+                "text": "show running config",
+                "files": (filename, fileobject, filetype),
+            }
+            postData = MultipartEncoder(postData)
+            HTTPHeaders = {
+            "Authorization": ACCESS_TOKEN,
+            "Content-Type": "multipart/form-data",
+            }
+            
+            
         # other commands only send text, or no attached file.
         else:
             postData = {"roomId": roomIdToGetMessages, "text": responseMessage}

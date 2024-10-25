@@ -1,0 +1,17 @@
+---
+- name: SAVE RUNNING-CONFIG TO FILE
+  hosts: CSR1KV-Pod1-3
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: DISPLAYING THE RUNNING-CONFIG
+      ios_command:
+        commands:
+          - show running-config
+      register: config
+ 
+    - name: SAVE OUTPUT
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: "show_run_65070171_{{ inventory_hostname }}.txt"
